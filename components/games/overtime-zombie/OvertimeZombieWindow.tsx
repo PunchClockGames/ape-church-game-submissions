@@ -195,12 +195,28 @@ const OvertimeZombieWindow: React.FC<OvertimeZombieWindowProps> = ({
                     className="sa-bg-base"
                     style={{ backgroundImage: `url(${STAGE_BACKGROUNDS[0]})` }}
                 />
-                {/* Stage 2-5 crossfade in on top of the base as the meter climbs */}
+                {/* Stage 2-5 crossfade in on top of the base as the meter climbs.
+                    Cumulative (<=) so previous stages STAY active as newer ones
+                    fade in on top — otherwise the outgoing stage fades to 0 at
+                    the same time the incoming stage fades from 0, revealing the
+                    Stage 1 base briefly through the semi-transparent overlap.
+                    With cumulative active states, the incoming stage simply
+                    covers the (still-fully-opaque) previous stage. When the
+                    meter resets on a new spin, all stages go inactive together
+                    and return cleanly to the Stage 1 base.
+
+                    NOTE: stages stay active during bonus too. Bonus BG is
+                    layered on top and snaps to opacity 1 instantly, but the
+                    stage layers' fade-out from bonus-triggered deactivation
+                    used to reveal the always-visible Stage 1 base for a paint
+                    tick before bonus rendered. Keeping stages active means the
+                    fallback under bonus is Stage 5 (fully opaque), not the
+                    Stage 1 base — no more flash. */}
                 {STAGE_BACKGROUNDS.slice(1).map((src, i) => (
                     <div
                         key={src}
                         className="sa-bg-layer"
-                        data-active={!isBonusBg && i + 1 <= activeStage}
+                        data-active={i + 1 <= activeStage}
                         style={{ backgroundImage: `url(${src})` }}
                     />
                 ))}
@@ -380,7 +396,7 @@ const OvertimeZombieWindow: React.FC<OvertimeZombieWindowProps> = ({
                 Renders over the game frame (not full window) so the asset's
                 zombie art sits in the vending machine display area. Text
                 positioned over the zombie's head, themed by tier:
-                  bigWin (non-bonus 2x+ wager)   → neon green
+                  bigWin (non-bonus 5x+ wager)   → neon green
                   feast (bonus, 1-5 workers)     → red
                   massacre (bonus, 6+ workers)   → purple
                 Auto-dismisses after 2s on final spins (parent clears

@@ -18,7 +18,7 @@
       "share": 100
     }
   ],
-  "submittedAt": "2026-07-29",
+  "submittedAt": "2026-09-03",
   "status": "pending",
   "category": "arcade",
   "tags": [
@@ -33,5 +33,5 @@
   "windowComponent": "OvertimeZombieWindow.tsx",
   "setupComponent": "OvertimeZombieSetupCard.tsx",
   "configFile": "overtimeZombieConfig.ts",
-  "version": "1.0.8"
+  "version": "1.0.9"
 }

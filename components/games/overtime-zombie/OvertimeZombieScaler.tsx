@@ -19,7 +19,7 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 // The mobile constants below define the "window" into the design canvas
 // that the mobile viewport shows. They're tuned to include the vending
 // machine display + the spin/info button column to its right.
-const DESIGN_WIDTH = 1500;
+const DESIGN_WIDTH = 1488;
 const MOBILE_BREAKPOINT = 768;
 // Width (in design pixels) of the slice of the canvas the mobile viewport
 // shows. Smaller = bigger visuals but more cropping; larger = more visible

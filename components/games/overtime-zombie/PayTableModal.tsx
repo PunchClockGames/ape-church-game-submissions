@@ -1,5 +1,4 @@
 import React from "react";
-import { X } from "lucide-react";
 import {
     SYMBOLS,
     KICK_THRESHOLD,
@@ -22,7 +21,7 @@ const PayTableModal: React.FC<PayTableModalProps> = ({ isOpen, onClose }) => {
                     onClick={onClose}
                     aria-label="Close"
                 >
-                    <X className="w-5 h-5" />
+                    X
                 </button>
 
                 <h2 className="sa-modal-title">GAME INFO</h2>

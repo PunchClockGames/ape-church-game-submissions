@@ -165,16 +165,20 @@ const OvertimeZombieComponent: React.FC<OvertimeZombieComponentProps> = ({ game 
             // modal flies in. Tuned tight since the modal has its own spring
             // entrance + delayed win/gameover SFX on top. When a big-win splash
             // is showing, extend the delay to 2s so the splash gets its full
-            // hold before the modal takes over; then clear bigWinLevel so the
-            // splash dismisses cleanly instead of lingering under the modal.
+            // hold before the modal takes over.
+            //
+            // NOTE: we intentionally do NOT clear bigWinLevel here. Doing so
+            // caused a jarring flash of the finished board between splash
+            // unmount (instant) and the modal's spring-in (~200-500ms). Letting
+            // the splash stay under the modal (splash z-index 30 < modal 50)
+            // keeps the finished visuals continuous — the modal just pops on
+            // top. Splash is cleared cleanly by resetRuntimeState() when the
+            // user hits Play Again or Reset from the results modal.
             const holdMs = gameState.bigWinLevel !== null ? 2000 : 300;
             const timeout = setTimeout(() => {
                 setPayout((prev) => prev ?? 0);
                 setCurrentView(2);
                 setGameOver(true);
-                if (gameState.bigWinLevel !== null) {
-                    setGameState((prev) => ({ ...prev, bigWinLevel: null }));
-                }
             }, holdMs);
             return () => clearTimeout(timeout);
         }
@@ -895,44 +899,6 @@ const OvertimeZombieComponent: React.FC<OvertimeZombieComponentProps> = ({ game 
                 {/* Future: Leaderboard button slot — render here when wired up. */}
             </div>
 
-            {/* Mobile-only stats bar — sits ABOVE the scaler so it renders at
-                native viewport size (the scaler's transform would otherwise
-                shrink the text to unreadable on narrow viewports). Same four
-                rows + dividers as the desktop top-right widget; CSS hides
-                whichever isn't appropriate for the current viewport width. */}
-            {currentView === 1 && (
-                <div className="sa-stats-mobile">
-                    <div className="sa-stat-row">
-                        <span className="sa-stat-label">Spins Left</span>
-                        <span className="sa-stat-value">{spinsRemaining}</span>
-                    </div>
-                    <div className="sa-stat-divider" />
-                    <div className="sa-stat-row">
-                        <span className="sa-stat-label">Won</span>
-                        <TooltipProvider delayDuration={150}>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <span className={`sa-stat-value sa-stat-value-tooltip ${liveWonForMobile > 0 ? "sa-stat-win" : ""}`}>
-                                        {formatApeCompact(liveWonForMobile)}
-                                    </span>
-                                </TooltipTrigger>
-                                <TooltipContent className="sa-tooltip-hint">
-                                    {formatApeFull(liveWonForMobile)}
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    </div>
-                    <div className="sa-stat-divider" />
-                    <div className="sa-stat-row">
-                        <span className="sa-stat-label">Wagered</span>
-                        <span className="sa-stat-value">{formatAmountMobile(totalWagered)}</span>
-                    </div>
-                    <div className="sa-stat-row">
-                        <span className="sa-stat-label">Per Spin</span>
-                        <span className="sa-stat-value">{formatAmountMobile(perSpinForMobile)}</span>
-                    </div>
-                </div>
-            )}
             <OvertimeZombieScaler>
             {/* Desktop title — sits inside the scaler with the same
                 max-w/centering as the game frame so they share the same
@@ -1016,6 +982,46 @@ const OvertimeZombieComponent: React.FC<OvertimeZombieComponentProps> = ({ game 
                 </GameWindow>
             </div>
             </OvertimeZombieScaler>
+
+            {/* Mobile-only stats bar — sits BELOW the scaler so the game
+                doesn't shift when entering/exiting play mode. It renders at
+                native viewport size (outside the scaler's transform, which
+                would otherwise shrink the text on narrow viewports). Same
+                four rows + dividers as the desktop top-right widget; CSS
+                hides whichever isn't appropriate for the current viewport. */}
+            {currentView === 1 && (
+                <div className="sa-stats-mobile">
+                    <div className="sa-stat-row">
+                        <span className="sa-stat-label">Spins Left</span>
+                        <span className="sa-stat-value">{spinsRemaining}</span>
+                    </div>
+                    <div className="sa-stat-divider" />
+                    <div className="sa-stat-row">
+                        <span className="sa-stat-label">Won</span>
+                        <TooltipProvider delayDuration={150}>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <span className={`sa-stat-value sa-stat-value-tooltip ${liveWonForMobile > 0 ? "sa-stat-win" : ""}`}>
+                                        {formatApeCompact(liveWonForMobile)}
+                                    </span>
+                                </TooltipTrigger>
+                                <TooltipContent className="sa-tooltip-hint">
+                                    {formatApeFull(liveWonForMobile)}
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
+                    <div className="sa-stat-divider" />
+                    <div className="sa-stat-row">
+                        <span className="sa-stat-label">Wagered</span>
+                        <span className="sa-stat-value">{formatAmountMobile(totalWagered)}</span>
+                    </div>
+                    <div className="sa-stat-row">
+                        <span className="sa-stat-label">Per Spin</span>
+                        <span className="sa-stat-value">{formatAmountMobile(perSpinForMobile)}</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

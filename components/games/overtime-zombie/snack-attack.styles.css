@@ -146,7 +146,7 @@ button[title="Unmute music"] {
 
 /* --- Widescreen game frame: enforce the background image's aspect ratio --- */
 .sa-game-frame {
-    aspect-ratio: 2498 / 1696;
+    aspect-ratio: 16 / 9;
     /* Dial this to scale the whole game up/down (was ~1152px at max-w-6xl) */
     max-width: 1382px;
     width: 100%;
@@ -174,34 +174,38 @@ button[title="Unmute music"] {
 /* --- Vending Machine Overlay --- */
 .sa-vending-overlay {
     position: absolute;
-    left: calc(23.21% + 97px);
-    right: calc(40.21% - 97px);
-    top: calc(34.9% - 72px);
-    bottom: calc(15.9% + 72px);
-    z-index: 10;
+    /* Symmetric bounds, shifted up 20px to match the art's display center */
+    left: 31%;
+    right: 31%;
+    top: 17.4%;
+    bottom: 24.6%;
+    /* Above .sa-bonus-frame (z-index 12) so worker multiplier float
+       renders on top of the frame's border/glow. */
+    z-index: 13;
     display: flex;
     align-items: center;
     justify-content: center;
     /* Clip everything except the top, so floating multiplier text can extend above */
     overflow: visible;
-    clip-path: inset(-80px -6px -9px -6px);
+    clip-path: inset(-80px -6px -3px -6px);
     padding: 2%;
 }
 
 /* --- Setup Overlay (positioned in the vending machine black display area) --- */
 .sa-setup-overlay {
     position: absolute;
-    left: calc(26% + 96px);
-    right: calc(43% - 96px);
-    top: calc(42% - 72px);
-    bottom: 22%;
+    /* Inside the black display area, upper portion */
+    left: 36%;
+    right: 35.5%;
+    top: 25.4%;
+    bottom: 34%;
     z-index: 10;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
     padding: 8px 12px;
-    transform: scale(1.05);
+    transform: scale(1.05, 0.945);
     transform-origin: center center;
 }
 
@@ -215,15 +219,17 @@ button[title="Unmute music"] {
 /* --- Place Your Bet button positioned over the snack door (same Y as the meter during play) --- */
 .sa-place-bet-overlay {
     position: absolute;
-    /* Centered under the setup info chunk */
-    left: calc(26% + 102px);
-    right: calc(43% - 102px);
-    top: calc(82% - 38px);
+    /* Centered over the dispenser door (below the black display) */
+    left: 36.333%;
+    right: 35.187%;
+    top: 75.24%;
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
+    transform: scaleY(0.95);
+    transform-origin: center center;
 }
 
 .sa-place-bet-button {
@@ -299,8 +305,9 @@ button[title="Unmute music"] {
 /* --- Spin Button (positioned on vending machine keypad) --- */
 .sa-spin-button {
     position: absolute;
-    right: calc(37% - 111px);
-    top: calc(50% - 75px);
+    /* Right-side vending machine keypad */
+    right: 29.1%;
+    top: 33.2%;
     width: 55px;
     height: 55px;
     z-index: 15;
@@ -351,8 +358,9 @@ button[title="Unmute music"] {
 /* --- Info Button (positioned below coin return) --- */
 .sa-info-button {
     position: absolute;
-    right: calc(37% - 110px);
-    top: calc(88% - 40px);
+    /* Below the keypad, near coin return area */
+    right: 29.13%;
+    top: 84.8%;
     width: 55px;
     height: 55px;
     z-index: 15;
@@ -383,7 +391,7 @@ button[title="Unmute music"] {
 /* --- Stats Overlay (top-right, desktop) --- */
 .sa-stats-overlay {
     position: absolute;
-    top: 27px;
+    top: 9px;
     right: 12px;
     z-index: 15;
     display: flex;
@@ -395,7 +403,7 @@ button[title="Unmute music"] {
     border-radius: 4px;
     font-family: 'Press Start 2P', monospace;
     font-size: 14px;
-    min-width: 240px;
+    min-width: 270px;
     backdrop-filter: blur(3px);
     line-height: 1.4;
 }
@@ -411,7 +419,7 @@ button[title="Unmute music"] {
     gap: 2px;
     padding: 12px 16px;
     background: rgba(15, 20, 25, 0.85);
-    border-bottom: 1px solid rgba(200, 215, 230, 0.55);
+    border-top: 1px solid rgba(200, 215, 230, 0.55);
     font-family: 'Press Start 2P', monospace;
     font-size: 14px;
     line-height: 1.4;
@@ -484,7 +492,7 @@ button[title="Unmute music"] {
     border: 2px solid #2a3640;
     border-radius: 8px;
     padding: 18px 30px;
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
     max-height: 90%;
     overflow-y: auto;
@@ -517,12 +525,15 @@ button[title="Unmute music"] {
     height: 32px;
     background: transparent;
     border: none;
-    color: #91989c;
+    color: #c8ced4;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 4px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    line-height: 1;
     transition: background 0.1s ease, color 0.1s ease;
 }
 
@@ -544,7 +555,7 @@ button[title="Unmute music"] {
 
 .sa-modal-subtitle {
     font-size: 11px;
-    color: #91989c;
+    color: #c8ced4;
     text-align: center;
     margin-bottom: 8px;
     line-height: 1.2;
@@ -561,7 +572,7 @@ button[title="Unmute music"] {
 
 .sa-modal-text {
     font-size: 11px;
-    color: #91989c;
+    color: #c8ced4;
     line-height: 1.2;
 }
 
@@ -571,7 +582,7 @@ button[title="Unmute music"] {
     padding: 2px 0 4px 0;
     border-bottom: 1px solid #2a3640;
     font-size: 10px;
-    color: #91989c;
+    color: #c8ced4;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -638,22 +649,24 @@ button[title="Unmute music"] {
 
 .sa-paytable-special-desc {
     font-size: 11px;
-    color: #91989c;
+    color: #c8ced4;
     line-height: 1.2;
 }
 
 /* --- Meter Overlay (positioned over the vending machine dispenser door) --- */
 .sa-meter-overlay {
     position: absolute;
-    left: calc(19% + 142px);
-    right: calc(36% - 62px);
-    /* Sits on the dispenser door just below the black display */
-    top: calc(82% - 41px);
+    /* Aligned to Place Your Bet button, but widened to fill the dispenser space */
+    left: 31.776%;
+    right: 30.630%;
+    top: 75.24%;
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0 3.5%;
+    transform: scale(0.95, 0.9025);
+    transform-origin: center center;
 }
 
 /* --- Floating match payoff "+N" — appears below the meter on each cascade
@@ -662,10 +675,10 @@ button[title="Unmute music"] {
 .sa-match-float-overlay {
     position: absolute;
     /* Horizontally aligned with the meter overlay so the text centers under it */
-    left: calc(19% + 142px);
-    right: calc(36% - 62px);
+    left: 31.776%;
+    right: 30.630%;
     /* Just below the meter's vertical center; the text itself animates down. */
-    top: calc(82% - 10px);
+    top: 78.84%;
     z-index: 11;
     text-align: center;
     pointer-events: none;
@@ -674,7 +687,7 @@ button[title="Unmute music"] {
 .sa-match-float-text {
     display: inline-block;
     font-family: 'Press Start 2P', monospace;
-    font-size: 40px;
+    font-size: 32px;
     color: #39FF14;
     /* Outline via 4-corner text-shadow + soft outer glow */
     text-shadow:
@@ -712,10 +725,12 @@ button[title="Unmute music"] {
    the meter's horizontal bounds. Color matches the kick shoe symbol so the
    highlighted shoes on the board and this banner read as one event. */
 .sa-match-float-text-kick {
-    font-size: 26px;
+    font-size: 24px;
     /* Smaller font lands the baseline higher than the +N points text — push
        the layout origin down so the kick banner settles at the same spot. */
-    margin-top: 10px;
+    margin-top: 6px;
+    /* Small right-shift to nudge the kick banner into visual center over the meter */
+    translate: 2px 0;
     /* Gold reads as 'reward' / 'saving the spin', distinct from the red
        attack signal and the green points color. */
     color: #FFD700;
@@ -976,7 +991,10 @@ button[title="Unmute music"] {
     width: 100%;
     /* Allow floating multiplier text to extend above; clip drops at the bottom */
     overflow: visible;
-    clip-path: inset(-80px -6px -9px -6px);
+    clip-path: inset(-80px -6px -3px -6px);
+    transform: scale(0.859);
+    transform-origin: center center;
+    translate: 4px 6px;
 }
 
 .sa-board-empty {
@@ -1047,17 +1065,19 @@ button[title="Unmute music"] {
 /* Pulsing bonus-round frame — matches the vending overlay (board) bounds, not clipped */
 .sa-bonus-frame {
     position: absolute;
-    left: calc(25% + 98px);
-    right: calc(42% - 95px);
-    top: calc(39% - 68px);
-    bottom: calc(20% + 74px);
+    /* Matches the vending overlay (shifted up 20px from center) */
+    left: 31%;
+    right: 31%;
+    top: 17.4%;
+    bottom: 24.6%;
     z-index: 12;
     pointer-events: none;
     border: 3px solid #a855f7;
     border-radius: 4px;
     animation: sa-bonus-frame-pulse 0.9s ease-in-out infinite alternate;
-    transform: scale(1.02, 1.07);
+    transform: scale(0.796, 0.811);
     transform-origin: center center;
+    translate: 4px 5px;
 }
 
 @keyframes sa-bonus-frame-pulse {
@@ -1255,7 +1275,7 @@ button[title="Unmute music"] {
 
 /* --- Responsive ---
    The narrow-viewport overrides this block USED to contain were legacy
-   patches from before the SnackAttackScaler handled responsive scaling.
+   patches from before the OvertimeZombieScaler handled responsive scaling.
    The scaler now shrinks the whole canvas uniformly on mobile, so these
    rules were double-shrinking specific elements (most visibly: the
    "OVERTIME ZOMBIE / SNACK ATTACK" released banner shrank to ~5.9px
@@ -1336,14 +1356,14 @@ button[title="Unmute music"] {
     .sa-spin-button {
         width: 90px !important;
         height: 90px !important;
-        right: calc(37% - 128.5px) !important;
-        top: calc(50% - 92.5px) !important;
+        right: calc(37% - 125.5px) !important;
+        top: calc(50% - 142.5px) !important;
     }
     .sa-info-button {
         width: 90px !important;
         height: 90px !important;
-        right: calc(37% - 127.5px) !important;
-        top: calc(88% - 57.5px) !important;
+        right: calc(37% - 124.5px) !important;
+        top: calc(88% - 47.5px) !important;
     }
     .sa-spin-button-img,
     .sa-info-button img {
@@ -1362,12 +1382,11 @@ button[title="Unmute music"] {
 
 /* ─────────────────────────────────────────────────────────────────────
    BIG WIN SPLASH
-   Celebrates big-payoff moments at spin-end. Overlays the vending
-   machine display area (bonus-frame bounds) with a dimmed backdrop +
-   zombie art that rises from below + themed text over the head-room.
-   Non-interactive so the SPIN button underneath remains pressable on
-   non-final spins (that's how the splash dismisses there); final spins
-   dismiss via the 2s parent-side timer.
+   Celebrates big-payoff moments at spin-end. Overlays the game frame
+   (not the whole window) with a dimmed backdrop + zombie art + themed
+   text. Non-interactive so the SPIN button underneath remains pressable
+   on non-final spins (that's how the splash dismisses there); final
+   spins dismiss via the 2s parent-side timer.
    ───────────────────────────────────────────────────────────────────── */
 .sa-big-win-splash {
     /* Confined to the vending machine display area (bonus-frame bounds)
@@ -1375,10 +1394,10 @@ button[title="Unmute music"] {
        Bottom-aligned so the art's base sits flush with the bottom of the
        bonus frame; the empty head-room in the art gets the tier text. */
     position: absolute;
-    left: calc(25% + 98px);
-    right: calc(42% - 95px);
-    top: calc(39% - 68px);
-    bottom: calc(20% + 74px);
+    left: 31%;
+    right: 31%;
+    top: 17.4%;
+    bottom: 24.6%;
     z-index: 30;
     display: flex;
     align-items: flex-end;
@@ -1387,6 +1406,9 @@ button[title="Unmute music"] {
     overflow: hidden;
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.65) 30%, rgba(0, 0, 0, 1) 100%);
     animation: sa-big-win-in 0.35s ease-out both;
+    transform: scale(0.780);
+    transform-origin: center center;
+    translate: 3px 5px;
 }
 
 .sa-big-win-content {
@@ -1418,9 +1440,11 @@ button[title="Unmute music"] {
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Press Start 2P', monospace;
-    /* Two-line layout relaxes the horizontal budget, so the font can grow.
-       Clamp keeps it readable at both narrow (mobile scaler) and wide viewports. */
-    font-size: clamp(1.125rem, 2.5vw, 2.7rem);
+    /* Fixed design-pixel size so the text scales uniformly with everything
+       else inside the scaler (both desktop natural and mobile crop). Using
+       vw here would tie the size to the viewport, causing mobile to render
+       disproportionately small once the scaler also shrinks it. */
+    font-size: 40px;
     line-height: 1.2;
     letter-spacing: 0.05em;
     text-align: center;
@@ -1441,9 +1465,9 @@ button[title="Unmute music"] {
 }
 .sa-big-win-feast .sa-big-win-text {
     color: #DC2626;  /* red — matches SNACK ATTACK meter text + attack frame */
-    /* ZOMBIE/FEAST! is shorter than OVERTIME/MASSACRE! so the base clamp
-       (sized to fit the longest tier) leaves slack for a small bump. */
-    font-size: calc(clamp(1.125rem, 2.5vw, 2.7rem) + 2px);
+    /* ZOMBIE/FEAST! is shorter than OVERTIME/MASSACRE! so it can be
+       slightly larger than the base 40px. */
+    font-size: 42px;
 }
 .sa-big-win-massacre .sa-big-win-text {
     color: #a855f7;  /* purple — matches RELEASED!! meter text + bonus frame */
